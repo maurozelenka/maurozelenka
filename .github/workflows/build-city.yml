@@ -1,0 +1,36 @@
+name: Build AI City
+on:
+  schedule:
+    - cron: '0 23 * * *' # Cada noche a las 11 PM
+  workflow_dispatch: # Botón manual para probar YA
+
+permissions:
+  contents: write
+
+jobs:
+  construct:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Instalar librerías
+        run: pip install numpy matplotlib google-generativeai PyGithub
+
+      - name: Ejecutar Arquitecto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/city_builder.py
+
+      - name: Publicar la Ciudad
+        run: |
+          git config --global user.name "City-Bot"
+          git config --global user.email "bot@noreply.github.com"
+          git add assets/city_view.png
+          git commit -m "🏙️ Ciudad actualizada por IA" || exit 0
+          git push
