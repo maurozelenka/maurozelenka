@@ -5,52 +5,81 @@ from github import Github
 from collections import defaultdict
 import google.generativeai as genai
 import json
+import random
 
 # --- CONFIGURACIÓN ---
 try:
     genai.configure(api_key=os.environ["GEMINI_API_KEY"])
     g = Github(os.environ["GITHUB_TOKEN"])
     repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
+    user = g.get_user() # Para leer eventos globales
 except Exception as e:
     print(f"Error config: {e}")
     exit(1)
 
-# --- 1. OBTENER ACTIVIDAD ---
+# --- 1. OBTENER ACTIVIDAD (CON MODO DEMO) ---
 def get_activity():
     try:
-        events = repo.get_events()
+        events = user.get_events()
         materials = defaultdict(int)
         commits_text = []
         total_commits = 0
         
+        print("Buscando actividad real...")
         for e in events:
             if e.type == "PushEvent":
                 repo_lang = e.repo.language
-                # Guardamos info para construir
-                if repo_lang: materials[repo_lang] += len(e.payload.commits)
-                # Guardamos texto para la IA
+                if repo_lang: 
+                    materials[repo_lang] += len(e.payload.commits)
                 for c in e.payload.commits:
                     commits_text.append(c.message)
                 total_commits += len(e.payload.commits)
             if total_commits > 50: break
+        
+        # --- AQUÍ ESTÁ EL TRUCO (MODO DEMO) ---
+        # Si no hay materiales reales, INVENTAMOS UNA METRÓPOLIS
+        if not materials:
+            print("⚠️ No hay actividad real. ACTIVANDO MODO DEMO (Simulación de Ciudad).")
+            # Simulamos que has programado como una bestia
+            materials = {
+                'Python': 25,
+                'JavaScript': 18,
+                'TypeScript': 15,
+                'Rust': 10,
+                'Go': 8,
+                'CSS': 12,
+                'HTML': 5
+            }
+            # Simulamos mensajes para que la IA elija un tema guapo
+            fake_msgs = [
+                "refactor critical backend microservices",
+                "optimize neural network layers",
+                "fix memory leak in production",
+                "deploy kubernetes cluster",
+                "implement ray tracing engine",
+                "redesign ui components with glassmorphism"
+            ]
+            return materials, " | ".join(fake_msgs)
             
         return materials, " | ".join(commits_text)
-    except: return None, ""
+    except Exception as e:
+        print(f"Error leyendo actividad: {e}")
+        return None, ""
 
 # --- 2. EL CEREBRO DE DISEÑO (GEMINI 2.0) ---
 def get_ai_theme(text):
     print("Gemini está decidiendo el estilo de la ciudad...")
     prompt = f"""
-    Actúa como un Arquitecto de Arte Generativo. Analiza el "sentimiento" de estos commits: "{text}".
+    Actúa como un Arquitecto de Arte Generativo. Analiza el "vibe" de estos commits: "{text}".
     
-    Elige un TEMA VISUAL para una ciudad voxel basado en si los mensajes denotan estrés, calma, velocidad o bugs.
+    Elige un TEMA VISUAL IMPRESIONANTE para una ciudad 3D.
     
-    Devuelve un JSON estricto con esta estructura (usa colores HEX):
+    Devuelve un JSON estricto con esta estructura (usa colores HEX vibrantes):
     {{
-      "theme_name": "Nombre (ej: Magma, Zen, Cyberpunk, Ice)",
-      "ground_color": "#HEX (color de fondo/suelo)",
-      "building_colors": ["#HEX1", "#HEX2", "#HEX3", "#HEX4"],
-      "edge_color": "#HEX (color borde bloques)"
+      "theme_name": "Nombre (ej: Neon Cyberpunk, Volcanic, Deep Ocean, Matrix)",
+      "ground_color": "#HEX (color oscuro para fondo, ej: #0d1117, #000000)",
+      "building_colors": ["#HEX1", "#HEX2", "#HEX3", "#HEX4", "#HEX5"],
+      "edge_color": "#HEX (color borde bloques, suele quedar bien negro o blanco)"
     }}
     """
     
@@ -59,53 +88,62 @@ def get_ai_theme(text):
         response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
         return json.loads(response.text)
     except:
-        # Fallback a 1.5 si falla la 2.0
         try:
             model = genai.GenerativeModel('gemini-1.5-flash')
             response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
             return json.loads(response.text)
         except:
-            # Fallback manual por si todo falla
             return {
-                "theme_name": "Default Blue",
+                "theme_name": "Emergency Backup",
                 "ground_color": "#0d1117",
-                "building_colors": ['#3572A5', '#2b7489', '#4F5D95'],
-                "edge_color": "#000000"
+                "building_colors": ['#FF00FF', '#00FFFF', '#FFFF00', '#FF0000'],
+                "edge_color": "#FFFFFF"
             }
 
 # --- 3. CONSTRUCTOR 3D ---
 def build_city(materials, theme):
     print(f"Construyendo ciudad estilo: {theme.get('theme_name', 'Default')}")
     
-    map_size = 10
+    map_size = 12 # Hacemos el mapa un poco más grande
     voxels = np.zeros((map_size, map_size, map_size), dtype=bool)
     colors = np.empty(voxels.shape, dtype=object)
     
     palette = theme.get('building_colors', ['#333'])
     
+    # Función hash pseudo-aleatoria pero determinista para colocar edificios
     def get_coords(name):
-        h = sum(ord(c) for c in name)
+        h = sum(ord(c) for c in name) * 7
         return h % map_size, (h // map_size) % map_size
 
     if materials:
         for i, (lang, count) in enumerate(materials.items()):
-            # Altura (máximo 8 bloques)
+            # Altura exagerada para que impresione (máximo 10 bloques)
             h_val = min(int(np.ceil(count / 1.5)), map_size - 2)
-            if h_val < 1: h_val = 1
+            if h_val < 2: h_val = 2 # Mínimo 2 pisos para que se vea
+            
             x, y = get_coords(lang)
+            
+            # Aseguramos que no se salga del mapa
+            if x >= map_size: x = map_size - 1
+            if y >= map_size: y = map_size - 1
             
             color = palette[i % len(palette)]
             
+            # Construimos la torre
             for z in range(h_val):
                 voxels[x, y, z] = True
                 colors[x, y, z] = color
-    else:
-        # Base pequeña si no hay commits
-        voxels[4:6, 4:6, 0] = True
-        colors[4:6, 4:6, 0] = palette[0]
+                
+            # A veces añadimos un "edificio satélite" al lado si la torre es muy alta
+            if h_val > 5:
+                if x+1 < map_size: 
+                    voxels[x+1, y, 0] = True
+                    colors[x+1, y, 0] = color
+                    voxels[x+1, y, 1] = True
+                    colors[x+1, y, 1] = color
 
     # Render
-    fig = plt.figure(figsize=(8, 8))
+    fig = plt.figure(figsize=(10, 10)) # Imagen más grande
     ax = fig.add_subplot(projection='3d')
     
     bg_color = theme.get('ground_color', '#0d1117')
@@ -113,15 +151,18 @@ def build_city(materials, theme):
     fig.patch.set_facecolor(bg_color)
 
     edge = theme.get('edge_color', 'k')
+    
+    # Dibujamos con sombra
     ax.voxels(voxels, facecolors=colors, edgecolor=edge, linewidth=0.5, shade=True)
     
-    ax.view_init(elev=40, azim=-45)
-    ax.set_box_aspect(None, zoom=1.1)
+    # Ángulo perfecto para ver la ciudad
+    ax.view_init(elev=35, azim=-45)
+    ax.set_box_aspect(None, zoom=1.2)
     ax.axis('off')
 
     if not os.path.exists('assets'): os.makedirs('assets')
     plt.savefig('assets/city_view.png', facecolor=bg_color, bbox_inches='tight', pad_inches=0)
-    print("¡Ciudad Generada!")
+    print("¡Ciudad Generada con éxito!")
 
 # EJECUCIÓN
 mats, text = get_activity()
