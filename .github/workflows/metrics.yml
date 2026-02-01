@@ -1,0 +1,20 @@
+name: Metrics
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Personal Metrics (Estable)
+        uses: lowlighter/metrics@latest
+        with:
+          filename: github-metrics.svg
+          token: ${{ secrets.METRICS_TOKEN }}
+          base: header, activity, community, repositories
+          # Solo activamos lo que es 100% estable
+          plugin_languages: yes
+          plugin_languages_details: percentage
+          plugin_languages_ignored: html, css
+          config_timezone: Europe/Madrid
