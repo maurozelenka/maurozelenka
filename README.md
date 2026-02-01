@@ -81,9 +81,9 @@
 
 <br/>
 
-<h2 align="center">🌆 My GitHub Skyline 3D</h2>
+<h2 align="center">📊 Detailed Coding Metrics</h2>
 <div align="center">
-  <img src="https://raw.githubusercontent.com/maurozelenka/maurozelenka/main/metrics.plugin.skyline.svg" alt="My 3D Skyline" width="100%" />
+  <img src="https://raw.githubusercontent.com/maurozelenka/maurozelenka/main/github-metrics.svg" alt="Detailed Metrics" width="100%" />
 </div>
 
 <div align="center">
