@@ -1,62 +1,67 @@
 import os
-from github import Github
+import random
+from github import Github, Auth
 
 # --- CONFIGURACIÓN ---
-try:
-    # Usamos el token para leer datos reales
-    g = Github(os.environ["GITHUB_TOKEN"])
-    user = g.get_user()
-    # Obtenemos eventos recientes para sacar datos "frescos"
-    events = user.get_public_events()
-except:
-    print("Error de conexión. Usando datos offline.")
-    events = []
+username = "ANONYMOUS"
+events = []
 
-# --- 1. OBTENER DATOS CRUDOS (TUS COMMITS REALES) ---
+try:
+    # 1. Obtenemos el usuario del entorno (Seguro y sin error 403)
+    repo_full_name = os.getenv("GITHUB_REPOSITORY", "usuario/repo")
+    username = repo_full_name.split("/")[0]
+
+    # 2. Conexión autenticada
+    token = os.environ.get("GITHUB_TOKEN")
+    if token:
+        auth = Auth.Token(token)
+        g = Github(auth=auth)
+        
+        # 3. Pedimos eventos explícitamente de TU usuario
+        user_obj = g.get_user(username)
+        events = user_obj.get_public_events()
+except Exception as e:
+    print(f"Modo offline activado: {e}")
+
+# --- 1. OBTENER DATOS CRUDOS ---
 def get_raw_data():
     data_lines = []
-    commits_found = 0
+    try:
+        for e in events:
+            if e.type == "PushEvent":
+                for c in e.payload.commits:
+                    data_lines.append(c.sha) # Hash real del commit
+            if len(data_lines) >= 14: break
+    except:
+        pass
     
-    # Buscamos los hashes de los commits recientes
-    for e in events:
-        if e.type == "PushEvent":
-            for c in e.payload.commits:
-                # El hash (sha) es perfecto para esto (ej: 6dcb09b5b57875f334f61aebed695e2e4193db5e)
-                data_lines.append(c.sha)
-                commits_found += 1
-        if commits_found >= 14: break # Necesitamos unas 14 líneas para llenar la pantalla
-    
-    # Si no hay suficientes datos recientes, rellenamos con "ruido" estético
+    # Relleno Matrix si faltan datos
     while len(data_lines) < 14:
-        import random
         fake_hash = ''.join(random.choices('0123456789abcdef', k=40))
         data_lines.append(fake_hash)
         
     return data_lines[:14]
 
-# --- 2. FORMATEAR COMO "VOLCADO HEXADECIMAL" ---
+# --- 2. FORMATEAR HEXADECIMAL ---
 def format_as_hexdump(raw_lines):
     formatted_lines = []
-    address = 0x08048000 # Una dirección de memoria inicial típica de Linux
+    address = 0x08048000 
 
     for line in raw_lines:
-        # Cogemos los primeros 32 caracteres del hash
         hex_data = line[:32]
-        # Los agrupamos de 2 en 2 para que parezcan bytes (AA BB CC...)
+        # Agrupamos en pares AA BB CC
         hex_pairs = " ".join(hex_data[i:i+2] for i in range(0, len(hex_data), 2)).upper()
-        
-        # Formato: DIRECCIÓN: DATOS
         formatted_line = f"0x{address:08X}:  {hex_pairs}"
         formatted_lines.append(formatted_line)
-        address += 16 # Incrementamos dirección
+        address += 16
         
     return formatted_lines
 
-# --- 3. GENERAR LA TERMINAL SVG ANIMADA ---
-def create_svg_terminal(lines):
-    height = 50 + (len(lines) * 20) # Altura dinámica
+# --- 3. GENERAR TERMINAL SVG (CON EFECTO GLOW) ---
+def create_svg_terminal(lines, user_display):
+    height = 60 + (len(lines) * 20)
     
-    # CSS para la animación de "escritura" rápida
+    # AQUI ESTÁ LA MAGIA DEL COLOR VERDE (#33ff00)
     css = """
     <style>
         @font-face {
@@ -66,50 +71,57 @@ def create_svg_terminal(lines):
         .term-text { 
             font-family: 'HackFont', 'Courier New', monospace; 
             font-size: 13px; 
-            fill: #33ff00; /* Verde hacker */
+            fill: #33ff00; /* <--- ESTO ES EL VERDE HACKER */
+            text-shadow: 0 0 5px #33ff00; /* <--- ESTO DA EL BRILLO NEÓN */
+            font-weight: bold;
             opacity: 0; 
         }
         .cursor { 
             fill: #33ff00; 
+            text-shadow: 0 0 5px #33ff00;
             animation: blink 0.8s infinite; 
         }
+        .header { fill: #888; font-family: Arial; font-size: 10px; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes appear { to { opacity: 1; } }
     """
     
-    # Generar delays para que aparezcan línea a línea muy rápido
     for i in range(len(lines) + 1):
-        # Aparece una línea cada 0.1 segundos
-        css += f"#L{i} {{ animation: appear 0.1s steps(1) forwards {i * 0.1}s; }}\n"
+        css += f"#L{i} {{ animation: appear 0.05s steps(1) forwards {i * 0.05}s; }}\n"
     css += "</style>"
     
-    # Crear los elementos de texto SVG
     svg_content = ""
-    # Línea 0: cabecera del sistema
-    svg_content += f'<text id="L0" x="15" y="50" class="term-text">CORE DUMP INITIATED FOR USER: [{user.login.upper()}]</text>\n'
+    # Cabecera
+    svg_content += f'<text id="L0" x="15" y="55" class="term-text">CORE DUMP INITIATED FOR TARGET: [{user_display.upper()}]</text>\n'
     
+    # Líneas de datos
     for i, line in enumerate(lines):
-        # i+1 porque la L0 ya la usamos
-        svg_content += f'<text id="L{i+1}" x="15" y="{75 + (i * 20)}" class="term-text">{line}</text>\n'
+        svg_content += f'<text id="L{i+1}" x="15" y="{80 + (i * 20)}" class="term-text">{line}</text>\n'
 
-    # Plantilla SVG final
     full_svg = f"""
     <svg width="650" height="{height}" viewBox="0 0 650 {height}" xmlns="http://www.w3.org/2000/svg">
         {css}
-        <rect x="0" y="0" width="650" height="{height}" rx="6" fill="#0c0c0c" stroke="#333"/>
-        <rect x="0" y="0" width="650" height="25" rx="6" fill="#1f1f1f"/>
-        <rect x="0" y="15" width="650" height="10" fill="#1f1f1f"/> <text x="325" y="17" text-anchor="middle" fill="#666" font-family="Arial" font-size="11">/dev/mem - raw dump</text>
+        <rect x="0" y="0" width="650" height="{height}" rx="6" fill="#050505" stroke="#333"/>
+        
+        <rect x="0" y="0" width="650" height="25" rx="6" fill="#1a1a1a"/>
+        <rect x="0" y="15" width="650" height="10" fill="#1a1a1a"/>
+        <text x="325" y="17" text-anchor="middle" class="header">/bin/xxd -r /dev/mem</text>
+        <circle cx="20" cy="12" r="5" fill="#ff5f56"/>
+        <circle cx="40" cy="12" r="5" fill="#ffbd2e"/>
+        <circle cx="60" cy="12" r="5" fill="#27c93f"/>
+
         {svg_content}
-        <rect x="15" y="{75 + (len(lines) * 20)}" width="8" height="15" class="cursor" id="L{len(lines)+1}"/>
+        
+        <rect x="15" y="{80 + (len(lines) * 20)}" width="8" height="15" class="cursor" id="L{len(lines)+1}"/>
     </svg>
     """
     
     if not os.path.exists('assets'): os.makedirs('assets')
     with open('assets/binary_dump.svg', 'w', encoding='utf-8') as f:
         f.write(full_svg)
-    print("¡Volcado binario generado!")
+    print("¡Volcado binario generado (VERDE)!")
 
 # EJECUCIÓN
 raw = get_raw_data()
 formatted = format_as_hexdump(raw)
-create_svg_terminal(formatted)
+create_svg_terminal(formatted, username)
