@@ -83,7 +83,7 @@
 
 <h2 align="center">📊 Detailed Coding Metrics</h2>
 <div align="center">
-  <img src="https://raw.githubusercontent.com/maurozelenka/maurozelenka/main/github-metrics.svg" alt="Detailed Metrics" width="100%" />
+  <img src="https://raw.githubusercontent.com/maurozelenka/maurozelenka/main/github-metrics.svg" alt="Detailed Metrics" width="70%" />
 </div>
 
 <div align="center">
