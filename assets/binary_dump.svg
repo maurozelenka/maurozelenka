@@ -5,10 +5,9 @@
         .term-text { 
             font-family: 'Courier New', Courier, monospace; 
             font-size: 13px; 
-            fill: #33ff00; 
-            text-shadow: 0 0 4px #33ff00;
+            fill: #33ff00; /* Verde Hacker */
+            text-shadow: 0 0 4px #33ff00; /* Brillo Neón */
             font-weight: bold;
-            opacity: 0; /* Empiezan invisibles */
         }
         .cursor { 
             fill: #33ff00; 
@@ -16,58 +15,72 @@
             animation: blink 0.8s infinite; 
         }
         
-        /* La animación: Aparece de golpe, espera, desaparece */
-        @keyframes typeLoop { 
-            0% { opacity: 0; }
-            1% { opacity: 1; }   /* Aparece */
-            95% { opacity: 1; }  /* Se mantiene */
-            100% { opacity: 0; } /* Se borra para reiniciar */
+        /* Animación de la máscara reveladora */
+        @keyframes reveal { 
+            0% { width: 0; }
+            87.5% { width: 630px; } /* Ancho total alcanzado */
+            99.5% { width: 630px; } /* Se mantiene visible durante la pausa */
+            100% { width: 0; } /* Se reinicia de golpe */
         }
         
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-    #L0 { animation: typeLoop 12s infinite steps(1) 0.0s; }
-#L1 { animation: typeLoop 12s infinite steps(1) 0.3s; }
-#L2 { animation: typeLoop 12s infinite steps(1) 0.6s; }
-#L3 { animation: typeLoop 12s infinite steps(1) 0.8999999999999999s; }
-#L4 { animation: typeLoop 12s infinite steps(1) 1.2s; }
-#L5 { animation: typeLoop 12s infinite steps(1) 1.5s; }
-#L6 { animation: typeLoop 12s infinite steps(1) 1.7999999999999998s; }
-#L7 { animation: typeLoop 12s infinite steps(1) 2.1s; }
-#L8 { animation: typeLoop 12s infinite steps(1) 2.4s; }
-#L9 { animation: typeLoop 12s infinite steps(1) 2.6999999999999997s; }
-#L10 { animation: typeLoop 12s infinite steps(1) 3.0s; }
-#L11 { animation: typeLoop 12s infinite steps(1) 3.3s; }
-#L12 { animation: typeLoop 12s infinite steps(1) 3.5999999999999996s; }
-#L13 { animation: typeLoop 12s infinite steps(1) 3.9s; }
-#L14 { animation: typeLoop 12s infinite steps(1) 4.2s; }
-#L15 { animation: typeLoop 12s infinite steps(1) 4.5s; }
-#L16 { animation: typeLoop 12s infinite steps(1) 4.8s; }
+    #maskRect0 { animation: reveal 40.0s linear infinite steps(60) 0.0s; }
+#maskRect1 { animation: reveal 40.0s linear infinite steps(60) 2.5s; }
+#maskRect2 { animation: reveal 40.0s linear infinite steps(60) 5.0s; }
+#maskRect3 { animation: reveal 40.0s linear infinite steps(60) 7.5s; }
+#maskRect4 { animation: reveal 40.0s linear infinite steps(60) 10.0s; }
+#maskRect5 { animation: reveal 40.0s linear infinite steps(60) 12.5s; }
+#maskRect6 { animation: reveal 40.0s linear infinite steps(60) 15.0s; }
+#maskRect7 { animation: reveal 40.0s linear infinite steps(60) 17.5s; }
+#maskRect8 { animation: reveal 40.0s linear infinite steps(60) 20.0s; }
+#maskRect9 { animation: reveal 40.0s linear infinite steps(60) 22.5s; }
+#maskRect10 { animation: reveal 40.0s linear infinite steps(60) 25.0s; }
+#maskRect11 { animation: reveal 40.0s linear infinite steps(60) 27.5s; }
+#maskRect12 { animation: reveal 40.0s linear infinite steps(60) 30.0s; }
+#maskRect13 { animation: reveal 40.0s linear infinite steps(60) 32.5s; }
 </style>
+        <defs>
+<clipPath id="cp0"><rect id="maskRect0" x="15" y="65" height="20" width="0" /></clipPath>
+<clipPath id="cp1"><rect id="maskRect1" x="15" y="85" height="20" width="0" /></clipPath>
+<clipPath id="cp2"><rect id="maskRect2" x="15" y="105" height="20" width="0" /></clipPath>
+<clipPath id="cp3"><rect id="maskRect3" x="15" y="125" height="20" width="0" /></clipPath>
+<clipPath id="cp4"><rect id="maskRect4" x="15" y="145" height="20" width="0" /></clipPath>
+<clipPath id="cp5"><rect id="maskRect5" x="15" y="165" height="20" width="0" /></clipPath>
+<clipPath id="cp6"><rect id="maskRect6" x="15" y="185" height="20" width="0" /></clipPath>
+<clipPath id="cp7"><rect id="maskRect7" x="15" y="205" height="20" width="0" /></clipPath>
+<clipPath id="cp8"><rect id="maskRect8" x="15" y="225" height="20" width="0" /></clipPath>
+<clipPath id="cp9"><rect id="maskRect9" x="15" y="245" height="20" width="0" /></clipPath>
+<clipPath id="cp10"><rect id="maskRect10" x="15" y="265" height="20" width="0" /></clipPath>
+<clipPath id="cp11"><rect id="maskRect11" x="15" y="285" height="20" width="0" /></clipPath>
+<clipPath id="cp12"><rect id="maskRect12" x="15" y="305" height="20" width="0" /></clipPath>
+<clipPath id="cp13"><rect id="maskRect13" x="15" y="325" height="20" width="0" /></clipPath>
+</defs>
+
         <rect x="0" y="0" width="650" height="380" rx="6" fill="#050505" stroke="#333"/>
         <rect x="0" y="0" width="650" height="25" rx="6" fill="#1a1a1a"/>
         <rect x="0" y="15" width="650" height="10" fill="#1a1a1a"/>
-        <text x="325" y="17" text-anchor="middle" fill="#888" font-family="Arial, sans-serif" font-size="10">/dev/urandom - binary mode</text>
+        <text x="325" y="17" text-anchor="middle" fill="#888" font-family="Arial, sans-serif" font-size="10">/dev/urandom - slow type mode</text>
         <circle cx="20" cy="12" r="5" fill="#ff5f56"/>
         <circle cx="40" cy="12" r="5" fill="#ffbd2e"/>
         <circle cx="60" cy="12" r="5" fill="#27c93f"/>
-        <text id="L0" x="15" y="55" class="term-text">INITIATING BINARY STREAM FOR: [MAUROZELENKA]</text>
-<text id="L1" x="15" y="80" class="term-text">00001111 11010010 10110010 11010011 11011011 00101010 10100110 01100100</text>
-<text id="L2" x="15" y="100" class="term-text">10111001 10100000 00101000 10011110 11011001 01000001 00000111 00100001</text>
-<text id="L3" x="15" y="120" class="term-text">01100010 10010111 11001110 01001001 11001100 10100011 11010000 01111110</text>
-<text id="L4" x="15" y="140" class="term-text">11110110 01000100 11010100 00000100 11001010 10111001 00001000 11010011</text>
-<text id="L5" x="15" y="160" class="term-text">10011010 01010000 10110110 11110100 10000000 00001010 00111101 10010110</text>
-<text id="L6" x="15" y="180" class="term-text">01000101 11011001 00111000 11101100 00100011 10100110 10100101 00010000</text>
-<text id="L7" x="15" y="200" class="term-text">10110111 11111011 10010011 00101000 00010000 10011111 00111111 01000000</text>
-<text id="L8" x="15" y="220" class="term-text">00101110 01101011 10111001 11011110 10101101 10110001 01101010 10101010</text>
-<text id="L9" x="15" y="240" class="term-text">11010010 10110110 10111000 01000011 10011100 00111011 11111001 01111010</text>
-<text id="L10" x="15" y="260" class="term-text">10100000 01110010 01110101 11001110 10001000 10011111 10000010 11010101</text>
-<text id="L11" x="15" y="280" class="term-text">11110000 11100100 11010100 11110110 10100100 00100101 10110100 10110111</text>
-<text id="L12" x="15" y="300" class="term-text">01000000 11111111 01101100 00111100 01001000 00011011 01011011 10011111</text>
-<text id="L13" x="15" y="320" class="term-text">10010111 01100110 11010001 10001001 00101100 01000101 01001101 01101100</text>
-<text id="L14" x="15" y="340" class="term-text">01011111 01101101 11000001 11001100 01101011 01010001 00000011 01001010</text>
-<text id="L15" x="15" y="360" class="term-text">00100111 01110101 00011010 00011100 11111011 01111011 10100010 11000100</text>
-<text id="L16" x="15" y="380" class="term-text">10111000 00100100 00100010 00100111 00000111 01000110 00010011 00111111</text>
+        
+        <text x="15" y="55" class="term-text">INITIATING SLOW-TYPE BINARY STREAM FOR: [MAUROZELENKA]</text>
+<text clip-path="url(#cp0)" x="15" y="80" class="term-text">00101011 01111111 01010011 11000110 11110100 00000101 00001001 00001011</text>
+<text clip-path="url(#cp1)" x="15" y="100" class="term-text">10011001 11011000 01001001 01011000 11010001 00001010 11101110 01010101</text>
+<text clip-path="url(#cp2)" x="15" y="120" class="term-text">00011101 01101110 11100110 01000110 01001101 10101101 00001010 01111010</text>
+<text clip-path="url(#cp3)" x="15" y="140" class="term-text">00111100 00111111 11110110 00010011 01010010 11000000 00011000 11011100</text>
+<text clip-path="url(#cp4)" x="15" y="160" class="term-text">11100111 00010101 11100101 11001100 00011101 11010001 11101001 10011111</text>
+<text clip-path="url(#cp5)" x="15" y="180" class="term-text">11001111 00001101 01100111 11101101 10001111 11010001 11100010 01011001</text>
+<text clip-path="url(#cp6)" x="15" y="200" class="term-text">10100011 01010101 01010110 00110100 10000101 11111100 01101011 00100110</text>
+<text clip-path="url(#cp7)" x="15" y="220" class="term-text">00100010 10001011 01100011 11001100 10010010 01111001 00000011 10111000</text>
+<text clip-path="url(#cp8)" x="15" y="240" class="term-text">00001100 11011101 00000101 11101111 00000100 00100101 10011001 01000111</text>
+<text clip-path="url(#cp9)" x="15" y="260" class="term-text">11011011 01010110 10011111 10001100 10111000 00001011 01100011 11011101</text>
+<text clip-path="url(#cp10)" x="15" y="280" class="term-text">11010010 10111111 10010000 11101011 11001010 10001101 01000010 01100110</text>
+<text clip-path="url(#cp11)" x="15" y="300" class="term-text">10111111 11010110 10010110 01111010 10110101 00000010 10110101 10011101</text>
+<text clip-path="url(#cp12)" x="15" y="320" class="term-text">00101110 11001100 11000110 01011110 11100001 00110011 10110011 11011111</text>
+<text clip-path="url(#cp13)" x="15" y="340" class="term-text">00000101 00111011 01111111 00100110 00010101 01101110 10111111 01111011</text>
 
-        <rect x="15" y="400" width="8" height="15" class="cursor" id="L17"/>
+        
+        <rect x="15" y="355" width="8" height="15" class="cursor"/>
     </svg>
     
