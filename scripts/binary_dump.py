@@ -19,7 +19,7 @@ try:
 except Exception as e:
     print(f"Modo offline: {e}")
 
-# --- 1. OBTENER DATOS ---
+# --- 1. OBTENER DATOS CRUDOS ---
 def get_raw_data():
     data_lines = []
     try:
@@ -31,31 +31,36 @@ def get_raw_data():
     except:
         pass
     
-    while len(data_lines) < 14:
+    while len(data_lines) < 16: # Necesitamos unas 16 líneas
         fake_hash = ''.join(random.choices('0123456789abcdef', k=40))
         data_lines.append(fake_hash)
         
-    return data_lines[:14]
+    return data_lines[:16]
 
-# --- 2. FORMATEAR ---
-def format_as_hexdump(raw_lines):
-    formatted_lines = []
-    address = 0x08048000 
-
+# --- 2. FORMATEAR A BINARIO PURO (0s y 1s) ---
+def format_as_binary(raw_lines):
+    binary_lines = []
     for line in raw_lines:
-        hex_data = line[:32]
-        hex_pairs = " ".join(hex_data[i:i+2] for i in range(0, len(hex_data), 2)).upper()
-        formatted_line = f"0x{address:08X}:  {hex_pairs}"
-        formatted_lines.append(formatted_line)
-        address += 16
+        # Convertimos el hash hex a un número gigante
+        hex_int = int(line, 16)
+        # Lo convertimos a string binario (quitando el '0b' inicial)
+        bin_str = bin(hex_int)[2:]
+        # Rellenamos con ceros a la izquierda si hace falta
+        bin_str = bin_str.zfill(160)
         
-    return formatted_lines
+        # Cogemos los primeros 64 bits para que quepa en pantalla
+        chunk = bin_str[:64]
+        # Añadimos un espacio cada 8 bits para que sea legible
+        formatted_chunk = " ".join(chunk[i:i+8] for i in range(0, len(chunk), 8))
+        binary_lines.append(formatted_chunk)
+        
+    return binary_lines
 
-# --- 3. GENERAR TERMINAL SVG (SIN FUENTES EXTERNAS) ---
+# --- 3. GENERAR TERMINAL SVG (BUCLE INFINITO) ---
 def create_svg_terminal(lines, user_display):
     height = 60 + (len(lines) * 20)
     
-    # CAMBIO IMPORTANTE: Usamos 'Courier New' y quitamos @font-face
+    # CSS PARA BUCLE INFINITO TIPO "ESCRITURA"
     css = """
     <style>
         .term-text { 
@@ -64,25 +69,40 @@ def create_svg_terminal(lines, user_display):
             fill: #33ff00; 
             text-shadow: 0 0 4px #33ff00;
             font-weight: bold;
-            opacity: 0; 
+            opacity: 0; /* Empiezan invisibles */
         }
         .cursor { 
             fill: #33ff00; 
             text-shadow: 0 0 4px #33ff00;
             animation: blink 0.8s infinite; 
         }
-        .header { fill: #888; font-family: Arial, sans-serif; font-size: 10px; }
+        
+        /* La animación: Aparece de golpe, espera, desaparece */
+        @keyframes typeLoop { 
+            0% { opacity: 0; }
+            1% { opacity: 1; }   /* Aparece */
+            95% { opacity: 1; }  /* Se mantiene */
+            100% { opacity: 0; } /* Se borra para reiniciar */
+        }
+        
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        @keyframes appear { to { opacity: 1; } }
     """
     
+    # Duración total del ciclo antes de reiniciarse (12 segundos)
+    cycle_duration = 12
+    
     for i in range(len(lines) + 1):
-        css += f"#L{i} {{ animation: appear 0.05s steps(1) forwards {i * 0.05}s; }}\n"
+        # Cada línea aparece 0.3s después de la anterior
+        delay = i * 0.3
+        css += f"#L{i} {{ animation: typeLoop {cycle_duration}s infinite steps(1) {delay}s; }}\n"
+    
     css += "</style>"
     
     svg_content = ""
-    svg_content += f'<text id="L0" x="15" y="55" class="term-text">CORE DUMP INITIATED FOR TARGET: [{user_display.upper()}]</text>\n'
+    # Cabecera
+    svg_content += f'<text id="L0" x="15" y="55" class="term-text">INITIATING BINARY STREAM FOR: [{user_display.upper()}]</text>\n'
     
+    # Líneas de ceros y unos
     for i, line in enumerate(lines):
         svg_content += f'<text id="L{i+1}" x="15" y="{80 + (i * 20)}" class="term-text">{line}</text>\n'
 
@@ -92,7 +112,7 @@ def create_svg_terminal(lines, user_display):
         <rect x="0" y="0" width="650" height="{height}" rx="6" fill="#050505" stroke="#333"/>
         <rect x="0" y="0" width="650" height="25" rx="6" fill="#1a1a1a"/>
         <rect x="0" y="15" width="650" height="10" fill="#1a1a1a"/>
-        <text x="325" y="17" text-anchor="middle" class="header">/bin/xxd -r /dev/mem</text>
+        <text x="325" y="17" text-anchor="middle" fill="#888" font-family="Arial, sans-serif" font-size="10">/dev/urandom - binary mode</text>
         <circle cx="20" cy="12" r="5" fill="#ff5f56"/>
         <circle cx="40" cy="12" r="5" fill="#ffbd2e"/>
         <circle cx="60" cy="12" r="5" fill="#27c93f"/>
@@ -104,9 +124,9 @@ def create_svg_terminal(lines, user_display):
     if not os.path.exists('assets'): os.makedirs('assets')
     with open('assets/binary_dump.svg', 'w', encoding='utf-8') as f:
         f.write(full_svg)
-    print("¡Volcado binario generado (Compatible con GitHub)!")
+    print("¡Stream binario infinito generado!")
 
 # EJECUCIÓN
 raw = get_raw_data()
-formatted = format_as_hexdump(raw)
-create_svg_terminal(formatted, username)
+binary_data = format_as_binary(raw)
+create_svg_terminal(binary_data, username)
