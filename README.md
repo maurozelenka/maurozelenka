@@ -86,6 +86,12 @@
   <img src="https://raw.githubusercontent.com/maurozelenka/maurozelenka/main/github-metrics.svg" alt="Detailed Metrics" width="70%" />
 </div>
 
+> El estilo visual de esta ciudad cambia cada día según el "vibe" que la IA detecta en mis commits.
+
+<p align="center">
+  <img src="assets/city_view.png" width="400" alt="AI Code City">
+</p>
+
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=3382ed&height=80&section=footer&animation=fadeIn" width="100%"/>
 </div>
