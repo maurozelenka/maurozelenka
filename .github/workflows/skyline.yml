@@ -1,0 +1,24 @@
+name: 3D Skyline
+on:
+  schedule:
+    - cron: "0 0 * * *" # Se ejecuta cada medianoche
+  workflow_dispatch: # Permite ejecutarlo manualmente desde la pestaña Actions
+
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Skyline 3D
+        uses: lowlighter/metrics@latest
+        with:
+          # Nombre del archivo que se creará en tu repo
+          filename: metrics.plugin.skyline.svg
+          # Tu secreto que ya comprobamos que tiene permisos correctos
+          token: ${{ secrets.METRICS_TOKEN }}
+          # Configuración de estilo
+          base: ""
+          plugin_skyline: yes
+          plugin_skyline_year: 2024
+          # Ajustes ligeros para evitar que se quede "bug"
+          plugin_skyline_frames: 20
+          plugin_skyline_quality: 0.5
