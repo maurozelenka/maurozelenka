@@ -1,0 +1,36 @@
+name: Binary Dump Update
+on:
+  schedule:
+    - cron: '0 */4 * * *' # Se actualiza cada 4 horas para parecer vivo
+  workflow_dispatch: # Botón manual
+
+permissions:
+  contents: write
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          
+      - name: Instalar PyGithub
+        run: pip install PyGithub
+
+      - name: Ejecutar Volcado
+        env:
+          # Solo necesitamos el token de GitHub para leer tus commits
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/binary_dump.py
+
+      - name: Guardar SVG
+        run: |
+          git config --global user.name "Dump-Bot"
+          git config --global user.email "bot@noreply.github.com"
+          git add assets/binary_dump.svg
+          git commit -m "📟 Raw Data Stream Updated" || exit 0
+          git push
