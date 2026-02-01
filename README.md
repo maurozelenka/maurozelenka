@@ -27,6 +27,9 @@
 
 <br>
 
+<img src="https://github-widgetbox.vercel.app/api/profile?username=maurozelenka&data=followers,repositories,commits&theme=darkmode" width="100%"/>
+
+
 <h2 align="center">👨‍💻 About me</h2>
 <img src="https://capsule-render.vercel.app/api?type=rect&color=40c463&height=2&section=header" width="100%">
 
