@@ -2,24 +2,20 @@
     <svg width="650" height="340" viewBox="0 0 650 340" xmlns="http://www.w3.org/2000/svg">
         
     <style>
-        @font-face {
-            font-family: 'HackFont';
-            src: url('https://cdnjs.cloudflare.com/ajax/libs/hack-font/3.3.0/webfonts/hack-regular.woff2') format('woff2');
-        }
         .term-text { 
-            font-family: 'HackFont', 'Courier New', monospace; 
+            font-family: 'Courier New', Courier, monospace; 
             font-size: 13px; 
-            fill: #33ff00; /* <--- ESTO ES EL VERDE HACKER */
-            text-shadow: 0 0 5px #33ff00; /* <--- ESTO DA EL BRILLO NEÓN */
+            fill: #33ff00; 
+            text-shadow: 0 0 4px #33ff00;
             font-weight: bold;
             opacity: 0; 
         }
         .cursor { 
             fill: #33ff00; 
-            text-shadow: 0 0 5px #33ff00;
+            text-shadow: 0 0 4px #33ff00;
             animation: blink 0.8s infinite; 
         }
-        .header { fill: #888; font-family: Arial; font-size: 10px; }
+        .header { fill: #888; font-family: Arial, sans-serif; font-size: 10px; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
         @keyframes appear { to { opacity: 1; } }
     #L0 { animation: appear 0.05s steps(1) forwards 0.0s; }
@@ -39,31 +35,28 @@
 #L14 { animation: appear 0.05s steps(1) forwards 0.7000000000000001s; }
 </style>
         <rect x="0" y="0" width="650" height="340" rx="6" fill="#050505" stroke="#333"/>
-        
         <rect x="0" y="0" width="650" height="25" rx="6" fill="#1a1a1a"/>
         <rect x="0" y="15" width="650" height="10" fill="#1a1a1a"/>
         <text x="325" y="17" text-anchor="middle" class="header">/bin/xxd -r /dev/mem</text>
         <circle cx="20" cy="12" r="5" fill="#ff5f56"/>
         <circle cx="40" cy="12" r="5" fill="#ffbd2e"/>
         <circle cx="60" cy="12" r="5" fill="#27c93f"/>
-
         <text id="L0" x="15" y="55" class="term-text">CORE DUMP INITIATED FOR TARGET: [MAUROZELENKA]</text>
-<text id="L1" x="15" y="80" class="term-text">0x08048000:  07 98 C1 21 A4 C0 E4 90 84 72 BA 0E 11 73 DA 88</text>
-<text id="L2" x="15" y="100" class="term-text">0x08048010:  25 84 F9 31 75 82 0F F2 EA 61 6B 06 4B 55 08 CF</text>
-<text id="L3" x="15" y="120" class="term-text">0x08048020:  57 B1 26 98 00 C3 39 3A 5F 92 50 B7 5F 3B 9F 53</text>
-<text id="L4" x="15" y="140" class="term-text">0x08048030:  98 9E F7 A1 7E 58 5A 1E D8 31 9F 78 68 25 E2 B3</text>
-<text id="L5" x="15" y="160" class="term-text">0x08048040:  C6 8C B7 8D 5D 79 C9 E2 59 28 BD 9F 3B 0F 41 14</text>
-<text id="L6" x="15" y="180" class="term-text">0x08048050:  68 D5 76 FF AE 82 A6 B1 9C 85 DB 9F 4F 93 F6 55</text>
-<text id="L7" x="15" y="200" class="term-text">0x08048060:  0A 08 7A F0 42 7B 87 9E 28 49 B2 C4 AE D4 2D 5A</text>
-<text id="L8" x="15" y="220" class="term-text">0x08048070:  94 88 FE AF AA 09 16 A9 1C AA 9A BC FA ED EF 9D</text>
-<text id="L9" x="15" y="240" class="term-text">0x08048080:  A0 9C D7 54 D9 F7 B6 42 DD 25 FC F8 22 91 F7 AB</text>
-<text id="L10" x="15" y="260" class="term-text">0x08048090:  C5 93 C1 FF 12 D4 63 1F 7B B5 6C 68 9C 3C BB AC</text>
-<text id="L11" x="15" y="280" class="term-text">0x080480A0:  86 B6 F8 82 9C 3E F9 62 F8 3C CB 1D DE 0B AF 2B</text>
-<text id="L12" x="15" y="300" class="term-text">0x080480B0:  D8 6E F1 CC 50 07 2B 8A 33 F9 77 84 63 3E C4 52</text>
-<text id="L13" x="15" y="320" class="term-text">0x080480C0:  0D 30 D7 06 6F 7C 19 10 1F 95 AB F6 01 70 D4 3F</text>
-<text id="L14" x="15" y="340" class="term-text">0x080480D0:  81 BA 4E 10 1E 3D 4B 83 D9 EC 7F 40 80 3F 32 FA</text>
+<text id="L1" x="15" y="80" class="term-text">0x08048000:  85 D1 69 E3 0E D0 5D B4 D1 DB 66 3F ED 0F 0C 86</text>
+<text id="L2" x="15" y="100" class="term-text">0x08048010:  DA AF A5 C9 E3 91 5F F3 24 3B 49 F4 88 C2 DF AA</text>
+<text id="L3" x="15" y="120" class="term-text">0x08048020:  5E C5 25 75 2B 73 10 0B 4C D0 9B 99 15 21 70 BC</text>
+<text id="L4" x="15" y="140" class="term-text">0x08048030:  4D A8 85 CA D9 CC B2 1F 12 B1 55 4D CB 23 D1 F8</text>
+<text id="L5" x="15" y="160" class="term-text">0x08048040:  AB 7B A8 02 01 DB 2F DA 0E D7 1E B8 06 6A 1B 1E</text>
+<text id="L6" x="15" y="180" class="term-text">0x08048050:  2A D7 E4 27 41 39 46 EA F7 55 39 F5 57 DD E4 1B</text>
+<text id="L7" x="15" y="200" class="term-text">0x08048060:  2C 40 0D B4 FB CE DB D0 21 60 B5 13 7A 3E D8 3C</text>
+<text id="L8" x="15" y="220" class="term-text">0x08048070:  2C D8 2A F4 B8 A8 86 A6 8B 7F BD 8D 3B B0 E7 4B</text>
+<text id="L9" x="15" y="240" class="term-text">0x08048080:  3D 1F F4 AB 25 7A BE 7D BA 4E 18 8C DF 2D 65 A0</text>
+<text id="L10" x="15" y="260" class="term-text">0x08048090:  72 83 A2 EC 39 AE D1 8B 8C 0D B6 8E FF 87 0B 39</text>
+<text id="L11" x="15" y="280" class="term-text">0x080480A0:  C2 7F F2 FA D0 01 2D 25 0D E7 A9 8A 6F 1A 9F 69</text>
+<text id="L12" x="15" y="300" class="term-text">0x080480B0:  62 8B B1 61 6C D5 3D 47 E5 3B 76 A3 7E D8 DD DE</text>
+<text id="L13" x="15" y="320" class="term-text">0x080480C0:  DA 27 AA EC BE 29 57 F8 B5 A9 6C 84 D1 55 AF 0E</text>
+<text id="L14" x="15" y="340" class="term-text">0x080480D0:  2D 53 D4 E4 85 4E 57 68 D7 A7 04 25 DF 84 34 A1</text>
 
-        
         <rect x="15" y="360" width="8" height="15" class="cursor" id="L15"/>
     </svg>
     
