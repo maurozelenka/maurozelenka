@@ -15,6 +15,7 @@ jobs:
           base: header, activity, community, repositories
           # Solo activamos lo que es 100% estable
           plugin_languages: yes
+          plugin_habits: no
           plugin_languages_details: percentage
           plugin_languages_ignored: html, css
           config_timezone: Europe/Madrid
