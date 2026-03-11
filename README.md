@@ -104,12 +104,6 @@
   <img src="https://raw.githubusercontent.com/maurozelenka/maurozelenka/main/github-metrics.svg" alt="Detailed Metrics" width="70%" />
 </div>
 
-<img src="https://github-widgetbox.vercel.app/api/profile?username=maurozelenka&data=followers,repositories,commits&theme=darkmode" width="100%"/>
-
-<div align="center">
-  <img src="https://user-images.githubusercontent.com/74038190/212284158-e840e285-664b-44d7-b79b-e264b5e54825.gif" width="400">
-</div>
-
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=3382ed&height=80&section=footer&animation=fadeIn" width="200%"/>
 </div>
