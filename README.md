@@ -87,22 +87,6 @@
   </picture>
 </div>
 
-<br/>
-
-<h2 align="center">🧱 3D Contribution Architecture</h2>
-<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
-<div align="center">
-  <img src="https://github.com/maurozelenka/maurozelenka/blob/main/isometric-calendar.svg" alt="Isometric 3D" width="800" />
-</div>
-
-
-<br/>
-
-<h2 align="center">📊 Detailed Coding Metrics</h2>
-<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
-<div align="center">
-  <img src="https://raw.githubusercontent.com/maurozelenka/maurozelenka/main/github-metrics.svg" alt="Detailed Metrics" width="70%" />
-</div>
 
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=3382ed&height=80&section=footer&animation=fadeIn" width="200%"/>
