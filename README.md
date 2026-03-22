@@ -51,12 +51,36 @@
 
 <h2 align="center"> 
   <img src="https://media2.giphy.com/media/QssGEmpkyEOhBCb7e1/giphy.gif?cid=ecf05e47a0n3gi1bfqntqmob8g9aid1oyj2wr3ds3mg700bl&rid=giphy.gif" width ="25">
-  <b> Tech Stack & Tools</b>
+  <b> Technologies & AI Workflows</b>
 </h2>
 <img src="https://capsule-render.vercel.app/api?type=rect&color=3382ed&height=2&section=header" width="100%">
 
+<br>
+
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=python,cpp,java,kotlin,androidstudio,html,js,mysql,docker,r,linux,git,bash,vscode,github&theme=dark" />
+  <h3>💻 Development</h3>
+  <img src="https://skillicons.dev/icons?i=python,c,java,kotlin,androidstudio,html,js,figma&theme=dark" />  <br><br>
+  <h3>🗄️ Databases & Data Analysis</h3>
+  <img src="https://skillicons.dev/icons?i=mysql,firebase&theme=dark" /> <br><br>
+  <h3>⚙️ Systems, DevOps</h3>
+  <img src="https://skillicons.dev/icons?i=linux,docker,bash,git,github,vscode&theme=dark" />
+</div>
+
+<br><br>
+
+<div align="center">
+  <h3>🤖 AI-Assisted Engineering</h3>
+  <table align="center">
+    <tr>
+      <td align="left">
+        <ul>
+          <li>⚡ <b>AI Agent-Code Editors:</b> Claude Code, Antigravity, Cursor, Windsurf, Codex <i>(I'm always adapting to the latest benchmarks)</i>.</li>
+          <li>🎨 <b>AI UI/UX & Design-to-Code:</b> Google Stitch <i>(Rapid prototyping & vibe design)</i>.</li>
+          <li>🧠 <b>LLMs & Prompting:</b> Claude, Gemini, ChatGPT, Grok, Perplexity <i>(For refactoring, debugging & problem-solving)</i>.</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
 </div>
 
 <br/>
@@ -68,9 +92,8 @@
 <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="100%">
 <div align="center">
 
-<!-- Profile Summary Cards -->
 <div align="center">
-  <img src="http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=maurozelenka&theme=tokyonight"" width="95%"/>
+  <img src="http://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=maurozelenka&theme=tokyonight" width="95%"/>
 </div>
 
 <div align="center">
@@ -86,7 +109,6 @@
     <img alt="github contribution grid snake animation" src="https://github.com/maurozelenka/maurozelenka/blob/output/github-contribution-grid-snake.svg">
   </picture>
 </div>
-
 
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=3382ed&height=80&section=footer&animation=fadeIn" width="200%"/>
