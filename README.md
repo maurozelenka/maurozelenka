@@ -34,7 +34,7 @@
   <table align="center">
     <tr>
       <td align="left">
-        Hey, I'm <b>Mauro Zelenka Pedrosa</b>! 🎓 Computer Engineering Student at <b>Universidade de Vigo</b>.
+        Hey, I'm <b>Mauro Zelenka Pedrosa</b>! 🎓 Master's Cybersecurity student at <b>Universidade de Coruña</b>.
         <br><br>
         I'm passionate about two of the most dynamic fields in Computer Science:
         <br>
@@ -69,17 +69,7 @@
 <br><br>
 
 <div align="center">
-  <h3>🤖 AI-Assisted Engineering</h3>
-  <table align="center">
-    <tr>
-      <td align="left">
-        <ul>
-          <li>⚡ <b>AI Agent-Code Editors:</b> Claude Code, Antigravity, Cursor, Windsurf, Codex <i>(I'm always adapting to the latest benchmarks)</i>.</li>
-          <li>🎨 <b>AI UI/UX & Design-to-Code:</b> Google Stitch <i>(Rapid prototyping & vibe design)</i>.</li>
-          <li>🧠 <b>LLMs & Prompting:</b> Claude, Gemini, ChatGPT, Grok, Perplexity <i>(For refactoring, debugging & problem-solving)</i>.</li>
-        </ul>
-      </td>
-    </tr>
+
   </table>
 </div>
 
